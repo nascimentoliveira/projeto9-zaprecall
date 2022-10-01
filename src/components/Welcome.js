@@ -1,8 +1,7 @@
-import logo from "../assets/img/logo.png"
-import styled from "styled-components";
+import logo from '../assets/img/logo.png'
+import styled from 'styled-components';
 
 export default function Welcome(props) {
-  let goal = '';
   const {
     decks = { decks },
     deckSelected = { deckSelected },
@@ -13,7 +12,7 @@ export default function Welcome(props) {
   } = props;
 
   function startTest() {
-    setStateApp("test")
+    setStateApp('test')
   }
 
   function setMaxGoal() {
@@ -36,12 +35,12 @@ export default function Welcome(props) {
         value={deckSelected}
         onChange={e => setValue(e.target.value)}
       >
-        <option disabled={true} value="">Escolha seu deck...</option>
+        <option disabled={true} value=''>Escolha seu deck...</option>
         {decks.map(deck => <option key={deck.id} value={deck.name}>{deck.name}</option>)}
       </select>
       <input
-        type="number"
-        placeholder={"Insira sua meta de zaps..."}
+        type='number'
+        placeholder={'Insira sua meta de zaps...'}
         value={goalSelected !== '' ? Math.min(goalSelected, setMaxGoal()) : ''}
         min='0'
         max={setMaxGoal()}
