@@ -9,7 +9,7 @@ export default function App() {
   const [stateApp, setStateApp] = useState('start'); //[start, test , end]
 
   if (stateApp === 'start') {
-    const decks = DECKS.map(deck => ({ id: deck.id, name: deck.name, maxGoal: deck.cards.length}));
+    const decks = DECKS.map(deck => ({ id: deck.id, name: deck.name, maxGoal: deck.cards.length }));
     return (<Welcome
       decks={decks}
       deckSelected={deckSelected}

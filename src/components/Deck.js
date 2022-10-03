@@ -10,7 +10,7 @@ export default function Deck({ cards }) {
   return (
     <DeckDisplay>
       <LogoDisplay>
-        <img src={logo} />
+        <img src={logo} alt='Logo ZapRecall' />
         <span>ZapRecall</span>
       </LogoDisplay>
       {cards.map((card, index) =>
@@ -22,7 +22,7 @@ export default function Deck({ cards }) {
           setResult={setResult}
         />
       )}
-      <Result nCards={cards.length} result={result} />
+      <Result result={result} />
     </DeckDisplay>
   );
 }
@@ -36,7 +36,7 @@ const DeckDisplay = styled.main`
   justify-content: center;
   align-items: center;
   margin: 0px;
-  padding: 0px;
+  padding-bottom: 130px;
   box-sizing: border-box;
 `;
 

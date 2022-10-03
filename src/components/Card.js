@@ -30,7 +30,7 @@ export default function Card({ card, index, result, setResult }) {
       case 'zap':
         return '#2FBE34';
       default:
-        return '#333333'
+        return '#333333';
     }
   }
 
@@ -42,19 +42,23 @@ export default function Card({ card, index, result, setResult }) {
         return almost;
       case 'zap':
         return right;
+      default:
+        return;
     }
   }
 
   function setImageText(status) {
     switch (status) {
       case 'standby':
-        return ({ text: `Pergunta ${index + 1}`, img: play });
+        return ({ text: `Pergunta ${index + 1}`, img: play, alt: 'Virar pergunta' });
       case 'question':
-        return ({ text: card.question, img: turn });
+        return ({ text: card.question, img: turn, alt: 'Virar resposta' });
       case 'answer':
-        return ({ text: card.answer, img: '' });
+        return ({ text: card.answer, img: '', alt: '' });
       case 'answered':
-        return ({ text: `Pergunta ${index + 1}`, img: setImgAnswered(result[index]) });
+        return ({ text: `Pergunta ${index + 1}`, img: setImgAnswered(result[index]), alt: result[index] });
+      default:
+        return;
     }
   }
 
@@ -119,16 +123,21 @@ export default function Card({ card, index, result, setResult }) {
             height: '23px'
           }
         });
+      default:
+        return;
     }
   }
 
-  const { text, img } = setImageText(cardStatus);
+  const { text, img, alt } = setImageText(cardStatus);
 
   if (cardStatus !== 'answer') {
     return (
-      <CardDisplay styleProps={setStyleProps(cardStatus)}>
+      <CardDisplay
+        styleProps={setStyleProps(cardStatus)}
+        onClick={() => { if (cardStatus === 'standby') setCardStatus(nextStatus(cardStatus)) }}
+      >
         <span>{text}</span>
-        <img onClick={() => setCardStatus(nextStatus(cardStatus))} src={img} />
+        <img onClick={() => setCardStatus(nextStatus(cardStatus))} src={img} alt={alt} />
       </CardDisplay>
     );
   } else {
@@ -160,16 +169,16 @@ export default function Card({ card, index, result, setResult }) {
 const CardDisplay = styled.section`
   width: 300px;
   min-height: ${props => props.styleProps.status === 'responding' ? '130px' : '65px'};
-  background: #FFFFFF;
+  background: ${props => props.styleProps.status === 'responding' ? '#FFFFD5' : '#FFFFFF'};
   box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.15);
   border-radius: 5px;
   box-sizing: border-box;
-  padding: 15px 15px 6px 15px;
+  padding: 0;
   display: flex;
   flex-direction: ${props => props.styleProps.status === 'responding' ? 'column' : 'row'};
   margin-bottom: 25px;
   justify-content: space-between;
-  align-items: center;
+  align-items: ${props => props.styleProps.status === 'responding' ? 'flex-start' : 'center'};
   position: ${props => props.styleProps.status === 'responding' ? 'relative' : 'static'};
 
   span {
@@ -179,7 +188,8 @@ const CardDisplay = styled.section`
     line-height: ${props => props.styleProps.styleText.lineHeight};
     text-decoration-line: ${props => props.styleProps.status === 'answered' ? 'line-through' : 'none'};;
     color: ${props => props.styleProps.styleText.color};
-    margin: 0px 15px;
+    padding: 15px;
+    
   }
 
   img {
@@ -196,6 +206,8 @@ const CardDisplay = styled.section`
     width: 100%;
     display: flex;
     justify-content: space-between;
+    padding: 0px 15px 6px 15px;
+    box-sizing: border-box;
 
     button {
       width: 32%;

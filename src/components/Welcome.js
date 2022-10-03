@@ -1,14 +1,14 @@
-import logo from '../assets/img/logo.png'
 import styled from 'styled-components';
+import logo from '../assets/img/logo.png'
 
 export default function Welcome(props) {
   const {
-    decks = { decks },
-    deckSelected = { deckSelected },
-    setDeckSelected = { setDeckSelected },
-    goalSelected = { goalSelected },
-    setGoalSelected = { setGoalSelected },
-    setStateApp = { setStateApp }
+    decks,
+    deckSelected,
+    setDeckSelected,
+    goalSelected,
+    setGoalSelected,
+    setStateApp
   } = props;
 
   function startTest() {
@@ -29,7 +29,7 @@ export default function Welcome(props) {
 
   return (
     <WelcomeDisplay>
-      <img src={logo} />
+      <img src={logo} alt='Logo ZapRecall' />
       <span>ZapRecall</span>
       <select
         value={deckSelected}
@@ -44,7 +44,7 @@ export default function Welcome(props) {
         value={goalSelected !== '' ? Math.min(goalSelected, setMaxGoal()) : ''}
         min='0'
         max={setMaxGoal()}
-        onChange={e => {setGoalSelected(Math.min(e.target.value, setMaxGoal()))}}
+        onChange={e => { setGoalSelected(Math.min(e.target.value, setMaxGoal())) }}
       />
       <button onClick={startTest}>Iniciar Recall!</button>
     </WelcomeDisplay>
