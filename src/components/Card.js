@@ -11,7 +11,11 @@ export default function Card({ card, index, result, setResult }) {
   const [cardStatus, setCardStatus] = useState(statusNames[0]);
 
   function nextStatus(curretStatus) {
-    return statusNames[statusNames.indexOf(curretStatus) + 1];
+    if (curretStatus !== statusNames[statusNames.length - 1]) {
+      return statusNames[statusNames.indexOf(curretStatus) + 1];
+    } else {
+      return curretStatus;
+    }
   }
 
   function updateCard(recall) {
@@ -81,7 +85,7 @@ export default function Card({ card, index, result, setResult }) {
 
       case 'question':
         return ({
-          status: 'responding',
+          status: 'question',
           styleText: {
             fontWeight: '400',
             fontSize: '18px',
@@ -96,7 +100,7 @@ export default function Card({ card, index, result, setResult }) {
 
       case 'answer':
         return ({
-          status: 'responding',
+          status: 'answer',
           styleText: {
             fontWeight: '400',
             fontSize: '18px',
@@ -137,7 +141,10 @@ export default function Card({ card, index, result, setResult }) {
         onClick={() => { if (cardStatus === 'standby') setCardStatus(nextStatus(cardStatus)) }}
       >
         <span>{text}</span>
-        <img onClick={() => setCardStatus(nextStatus(cardStatus))} src={img} alt={alt} />
+        <img 
+          onClick={() => setCardStatus(nextStatus(cardStatus))} 
+          src={img} 
+          alt={alt} />
       </CardDisplay>
     );
   } else {
@@ -168,18 +175,24 @@ export default function Card({ card, index, result, setResult }) {
 
 const CardDisplay = styled.section`
   width: 300px;
-  min-height: ${props => props.styleProps.status === 'responding' ? '130px' : '65px'};
-  background: ${props => props.styleProps.status === 'responding' ? '#FFFFD5' : '#FFFFFF'};
+  min-height: ${props => (props.styleProps.status === 'question' || props.styleProps.status === 'answer') ? '130px' : '65px'};
+  background: ${props => (props.styleProps.status === 'question' || props.styleProps.status === 'answer') ? '#FFFFD5' : '#FFFFFF'};
   box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.15);
   border-radius: 5px;
   box-sizing: border-box;
   padding: 0;
   display: flex;
-  flex-direction: ${props => props.styleProps.status === 'responding' ? 'column' : 'row'};
+  flex-direction: ${props => (props.styleProps.status === 'question' || props.styleProps.status === 'answer') ? 'column' : 'row'};
   margin-bottom: 25px;
   justify-content: space-between;
-  align-items: ${props => props.styleProps.status === 'responding' ? 'flex-start' : 'center'};
-  position: ${props => props.styleProps.status === 'responding' ? 'relative' : 'static'};
+  align-items: ${props => (props.styleProps.status === 'question' || props.styleProps.status === 'answer') ? 'flex-start' : 'center'};
+  position: ${props => (props.styleProps.status === 'question' || props.styleProps.status === 'answer') ? 'relative' : 'static'};
+  transform: ${props => props.styleProps.status === 'question' ? ' scale(-1, 1) rotateY(180deg)' : ''};
+  transition-duration: 0.15s;
+
+  &:hover {
+    transform: ${props => props.styleProps.status === 'standby' ? 'scale(1.05)' : ''};
+  }
 
   span {
     font-family: 'Recursive', sans-serif;
@@ -189,7 +202,6 @@ const CardDisplay = styled.section`
     text-decoration-line: ${props => props.styleProps.status === 'answered' ? 'line-through' : 'none'};;
     color: ${props => props.styleProps.styleText.color};
     padding: 15px;
-    
   }
 
   img {
@@ -197,9 +209,9 @@ const CardDisplay = styled.section`
     width: ${props => props.styleProps.styleImg.width};
     height: ${props => props.styleProps.styleImg.height};
     margin: 0px 15px;
-    position: ${props => props.styleProps.status === 'responding' ? 'absolute' : 'static'};
+    position: ${props => (props.styleProps.status === 'question' || props.styleProps.status === 'answer') ? 'absolute' : 'static'};
     right: 0;
-    bottom: ${props => props.styleProps.status === 'responding' ? '6px' : '0'};
+    bottom: ${props => (props.styleProps.status === 'question' || props.styleProps.status === 'answer') ? '6px' : '0'};
   }
 
   div {

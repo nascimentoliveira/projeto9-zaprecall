@@ -6,10 +6,17 @@ import { useState } from 'react';
 export default function App() {
   const [deckSelected, setDeckSelected] = useState('');
   const [goalSelected, setGoalSelected] = useState('');
-  const [stateApp, setStateApp] = useState('start'); //[start, test , end]
+  const [stateApp, setStateApp] = useState('start'); //[start, test , end, restart]
+
+  if (stateApp === 'restart') {
+    setDeckSelected('');
+    setGoalSelected('');
+    setStateApp('start');
+  }
 
   if (stateApp === 'start') {
     const decks = DECKS.map(deck => ({ id: deck.id, name: deck.name, maxGoal: deck.cards.length }));
+
     return (<Welcome
       decks={decks}
       deckSelected={deckSelected}
@@ -23,10 +30,6 @@ export default function App() {
 
   if (stateApp === 'test') {
     const deck = DECKS.filter(deck => deck.name === deckSelected)[0];
-    return <Deck cards={deck.cards} />;
-  }
-
-  if (stateApp === 'end') {
-    return;
+    return <Deck cards={deck.cards} goalSelected={goalSelected} setStateApp={setStateApp} />;
   }
 }

@@ -3,10 +3,11 @@ import notRemember from '../assets/img/icone_erro.png';
 import almost from '../assets/img/icone_quase.png';
 import right from '../assets/img/icone_certo.png';
 
-export default function Result({ result }) {
+export default function Result({ result, goalSelected }) {
   const answered = result.filter(x => x !== 'notOpen');
   const dictImage = { 'notRemember': notRemember, 'almostDontRemember': almost, 'zap': right };
   const dictAlt = { 'notRemember': 'Não lembrei', 'almostDontRemember': 'Quase não lembrei', 'zap': 'Zap!' };
+
   return (
     <ResultDisplay>
       <span>{`${answered.length}/${result.length} CONCLUÍDOS`}</span>
@@ -17,10 +18,11 @@ export default function Result({ result }) {
       </div>
     </ResultDisplay>
   );
+
 }
 
 const ResultDisplay = styled.section`
-  width: 100vw;
+  width: 100%;
   min-height: 80px;
   background-color: #FFFFFF;
   position: fixed;

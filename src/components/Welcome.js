@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import logo from '../assets/img/logo.png'
+import logo from '../assets/img/logo.png';
 
 export default function Welcome(props) {
   const {
@@ -12,12 +12,20 @@ export default function Welcome(props) {
   } = props;
 
   function startTest() {
-    setStateApp('test')
+    if (!deckSelected) {
+      alert('Escolha um deck de flashcards!');
+    } else {
+      if (!goalSelected) {
+        alert('Escolha uma meta de Zaps!');
+      } else {
+        setStateApp('test');
+      }
+    }
   }
 
   function setMaxGoal() {
     return (deckSelected === '' ?
-      0 : decks.filter(deck => (deck.name === deckSelected))[0].maxGoal);
+      1 : decks.filter(deck => (deck.name === deckSelected))[0].maxGoal);
   }
 
   function setValue(value) {
@@ -33,7 +41,7 @@ export default function Welcome(props) {
       <span>ZapRecall</span>
       <select
         value={deckSelected}
-        onChange={e => setValue(e.target.value)}
+        onChange={e => { setValue(e.target.value); setGoalSelected('') }}
       >
         <option disabled={true} value=''>Escolha seu deck...</option>
         {decks.map(deck => <option key={deck.id} value={deck.name}>{deck.name}</option>)}
@@ -41,10 +49,10 @@ export default function Welcome(props) {
       <input
         type='number'
         placeholder={'Insira sua meta de zaps...'}
-        value={goalSelected !== '' ? Math.min(goalSelected, setMaxGoal()) : ''}
-        min='0'
+        value={goalSelected !== '' ? Math.min(Math.max(1, goalSelected), setMaxGoal()) : ''}
+        min='1'
         max={setMaxGoal()}
-        onChange={e => { setGoalSelected(Math.min(e.target.value, setMaxGoal())) }}
+        onChange={e => { setGoalSelected(Math.min(Math.max(1, e.target.value), setMaxGoal())) }}
       />
       <button onClick={startTest}>Iniciar Recall!</button>
     </WelcomeDisplay>
@@ -52,9 +60,9 @@ export default function Welcome(props) {
 }
 
 const WelcomeDisplay = styled.main`
-  background-color: #FB6B6B;
   width: 100vw;
   min-height: 100vh;
+  background-color: #FB6B6B;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -111,17 +119,23 @@ const WelcomeDisplay = styled.main`
   button {
     width: 246px;
     height: 54px;
-    background: #FFFFFF;
+    background-color: #FFFFFF;
     border: 1px solid #D70900;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
     border-radius: 5px;
-    box-sizing: border-box;
-    font-family: 'Recursive';
+    font-family: 'Recursive', sans-serif;
     font-weight: 400;
     font-size: 18px;
     line-height: 22px;
     text-align: center;
     color: #D70900;
     margin: 17px;
+    box-sizing: border-box;
+    transition-duration: 0.4s;
+
+    &:hover {
+      color: #FFFFFF;
+      background-color: #D70900;
+    }
   }
 `;
